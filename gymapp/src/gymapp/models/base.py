@@ -48,7 +48,9 @@ class Base(DeclarativeBase):
         return self
 
     def to_dict(self):
-        return {col.name: getattr(self, col.name) for col in self.__table__.columns}
+        dict_instance = {col.name: getattr(self, col.name) for col in self.__table__.columns}
+
+        return {k:v if not isinstance(v, datetime)  else v.isoformat() for k,v in dict_instance.items()}
 
     def __repr__(self):
         cols = ", ".join(
